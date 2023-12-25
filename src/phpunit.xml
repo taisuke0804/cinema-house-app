@@ -18,11 +18,11 @@
         </include>
     </source>
     <php>
-        <server name="APP_ENV" value="testing"/>
+        <server name="APP_ENV" value="testing"/> <!-- .env.testingのAPP_ENVの値をvalueに -->
         <env name="BCRYPT_ROUNDS" value="4"/>
         <env name="CACHE_DRIVER" value="array"/>
         <!-- <env name="DB_CONNECTION" value="sqlite"/> -->
-        <server name="DB_CONNECTION" value="mysql_testing" />
+        <server name="DB_CONNECTION" value="mysql_testing" /> <!-- タグ名とvalueを変更 -->
         <!-- <env name="DB_DATABASE" value=":memory:"/> -->
         <env name="MAIL_MAILER" value="array"/>
         <env name="PULSE_ENABLED" value="false"/>
