@@ -83,8 +83,8 @@ class ReservationController extends Controller
 
     $screening_date = Carbon::parse($screen->screening_date)->format('Y年m月d日');
 
-    Mail::to($user->email)
-      ->send(new ReserveConfirmMail($screening_date, $seat_number, $screen, $user));
+    // Mail::to($user->email)
+    //   ->send(new ReserveConfirmMail($screening_date, $seat_number, $screen, $user));
 
     return redirect()->route('user.reserve.fix')->with([
       'reserve_flash_message' => '上映スケジュール' . $screening_date . 'の座席番号「' . $seat_number . '」予約が完了しました。',

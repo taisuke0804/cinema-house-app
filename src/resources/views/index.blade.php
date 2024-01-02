@@ -31,8 +31,10 @@
     <p class="ps-24 pb-5 text-xl">上映に参加したい場合は、下記から会員登録 or ログインしてください</p>
     <!-- 会員登録ボタンとログインボタンを表示。ボタンは中央寄せ。 -->
     <div class="flex justify-center gap-36 w-full">
+      {{--
       <a href="{{ route('register') }}"
-        class="bg-green-500 hover:bg-green-700 text-white font-bold px-4 rounded-lg w-44 h-12 text-center flex items-center justify-center">会員登録</a>
+      class="bg-green-500 hover:bg-green-700 text-white font-bold px-4 rounded-lg w-44 h-12 text-center flex items-center justify-center">会員登録</a>
+      --}}
       <a href="{{ route('login') }}"
         class="bg-green-500 hover:bg-green-700 text-white font-bold px-4 rounded-lg w-44 h-12 text-center flex items-center justify-center">ログイン</a>
     </div>
