@@ -1,0 +1,63 @@
+version: '3.9'
+
+services:
+  web:
+    build: ./web
+    container_name: ${WEB_CONTAINER_NAME:-laravel_container} # コンテナ名は環境変数で指定
+    ports:
+      - "80:80" # ホストのポート番号:コンテナのポート番号
+      - "5173:5173"
+    volumes: # ホストのディレクトリをコンテナにマウント
+      - type: bind
+        source: ./src
+        target: /var/www/html
+    user: "${UID_GID}" # ホストのユーザーID:コンテナのユーザーID
+    # ユーザー名:グループ名
+    
+    depends_on:
+      - mysql
+  mysql:
+    image: mysql:8.0.35
+    container_name: ${DB_CONTAINER_NAME:-mysql_container} # コンテナ名は環境変数で指定
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} # 環境変数で指定
+      MYSQL_DATABASE: ${MYSQL_DATABASE} # 環境変数で指定
+      MYSQL_USER: ${MYSQL_USER} # 環境変数で指定
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD} # 環境変数で指定
+      TZ: 'Asia/Tokyo' # タイムゾーンを日本に設定
+    volumes: # ホストのディレクトリをコンテナにマウント
+      - type: volume
+        source: db-store
+        target: /var/lib/mysql
+      - type: bind
+        source: ./mysql/my.cnf
+        target: /etc/mysql/conf.d/my.cnf
+    ports:
+      - "3306:3306"
+  pma:
+    image: phpmyadmin/phpmyadmin
+    container_name: pma
+    environment:
+      PMA_ARBITRARY: 1 # ホストのMySQLに接続するために必要
+      PMA_HOST: ${DB_CONTAINER_NAME:-mysql_container} # コンテナ名は環境変数で指定
+      PMA_USER: ${MYSQL_USER} # 環境変数で指定
+      PMA_PASSWORD: ${MYSQL_PASSWORD} # 環境変数で指定
+      TZ: 'Asia/Tokyo' # タイムゾーンを日本に設定
+    ports:
+      - "8080:80"
+    depends_on:
+      - mysql
+  mailhog:
+    image: mailhog/mailhog
+    container_name: mail_server
+    ports:
+      - target: 8025
+        published: ${MAILHOG_PUBLISHED_PORT:-8025}
+        protocol: tcp
+        mode: host
+      - target: 1025
+        published: ${MAILHOG_PUBLISHED_SMTP_PORT:-1025}
+        protocol: tcp
+        mode: host
+volumes:
+  db-store:
